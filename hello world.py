@@ -1,4 +1,4 @@
 print("hello world")
-s=samuel
-t=tihon
-print(hello (s+t))
+s='samuel '
+t='tihon'
+print(s+t)
