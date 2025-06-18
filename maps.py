@@ -1,2 +1,9 @@
-favorite_food{'iris' :'kimchi','lily' : 'stinky feet', 'emma' : 'icecream', 'kara' : 'milk' }
-print(favorite_food['iris'])
+
+import time
+def lots_of_numbers(max):
+    t1 = time.time()
+    for x in range(0, max):
+        print(x)
+    t2 = time.time()
+    print('it took %s seconds' % (t2-t1))
+lots_of_numbers(100)
