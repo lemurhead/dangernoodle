@@ -8,7 +8,8 @@ tk.wm_attributes("-topmost", 1)
 canvas = Canvas(tk, width=500, height=400, bd=0, highlightthickness=0)
 canvas.pack()
 tk.update()
-
+score = 0
+score_text = canvas.create_text(50, 20, text="Score: 0", font=('Helvetica', 14), fill='blue')
 class Ball:
     def __init__(self, canvas, paddle, color):
         self.canvas = canvas
@@ -37,11 +38,14 @@ class Ball:
             self.hit_bottom = True
         if self.hit_paddle(pos) == True:
             self.y = -3
+            global score
+            score += 1
+            canvas.itemconfig(score_text, text=f"Score: {score}")
         if pos[0] <= 0:
             self.x = 3
         if pos[2] >= self.canvas_width:
             self.x = -3
-            
+#creating paddle and adding key controls
 class Paddle:
     def __init__(self, canvas, color):
         self.canvas = canvas
@@ -59,28 +63,26 @@ class Paddle:
         elif pos[2] >= self.canvas_width:
             self.x = 0
     def turn_left(self, evt):
-        self.x = -2
+        self.x = -4
     def turn_right(self, evt):
-        self.x = 2        
-
+        self.x = 4
+                
+#adding objects
 paddle = Paddle(canvas, 'red')
 ball = Ball(canvas, paddle, 'green')
 
-
-while 1:
-    if ball.hit_bottom == False:
+#defining game over screen
+def show_game_over():
+    canvas.create_text(250, 200, text="GAME OVER", font=('Helvetica', 30), fill='red')
+    tk.update()
+#starting game loop
+def game_loop():
+    if not ball.hit_bottom:
         ball.draw()
-        paddle.draw() 
+        paddle.draw()
+        tk.after(10, game_loop)
     else:
-        canvas.create_text(
-            250, 200,  # Center of canvas
-            text="GAME OVER",
-            font=('Helvetica', 30),
-            fill='red'
-            
-        )
-        break
-tk.update_idletasks()
-tk.update()
-time.sleep(0.01)
+        canvas.create_text(250, 200, text="GAME OVER", font=('Helvetica', 30), fill='red')
 
+game_loop()
+tk.mainloop()
